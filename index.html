@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Amora 🤍</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3b2a33; --rose:#d98fa6; --blush:#fbe9ee; --cream:#fffaf6; --leaf:#5f7f62; --gold:#c9a45c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif; color:var(--ink);
+  background:radial-gradient(circle at 50% 20%,#fff4f7 0%,var(--blush) 55%,#f3d3dd 100%);
+  overflow:hidden;
+}
+.scene{
+  position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;opacity:0;pointer-events:none;transition:opacity .8s ease;overflow-y:auto;
+}
+.scene.active{opacity:1;pointer-events:auto}
+h1{font-size:clamp(2.2rem,8vw,4rem);font-weight:600;line-height:1.1}
+h2{font-size:clamp(1.8rem,6vw,2.8rem);font-weight:600;margin-bottom:8px}
+.hand{font-family:'Caveat',cursive;font-size:clamp(1.3rem,4.5vw,1.8rem);color:var(--rose)}
+.btn{
+  margin-top:22px;padding:12px 30px;border:1.5px solid var(--rose);background:transparent;color:var(--ink);
+  font:600 1.15rem 'Cormorant Garamond',serif;border-radius:999px;cursor:pointer;transition:background .25s,color .25s;
+}
+.btn:hover,.btn:focus-visible{background:var(--rose);color:#fff;outline:none}
+
+/* Scene 1: envelope */
+.envelope{position:relative;width:min(300px,78vw);height:200px;margin:28px auto 10px;cursor:pointer;filter:drop-shadow(0 14px 22px rgba(120,60,80,.25))}
+.env-back{position:absolute;inset:0;background:#f2c9d4;border-radius:6px}
+.env-card{
+  position:absolute;left:8%;right:8%;top:12%;height:78%;background:var(--cream);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;font-family:'Caveat',cursive;font-size:1.5rem;color:var(--rose);
+  transition:transform .9s ease .35s;
+}
+.env-front{position:absolute;inset:0;background:linear-gradient(135deg,#f7d8e1,#efb9c9);clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);border-radius:6px}
+.env-flap{
+  position:absolute;left:0;right:0;top:0;height:60%;background:#ecaabd;transform-origin:top;
+  clip-path:polygon(0 0,100% 0,50% 100%);transition:transform .6s ease;z-index:3;
+}
+.seal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:var(--gold);z-index:4;display:grid;place-items:center;color:#fff;font-size:1.1rem;transition:opacity .3s}
+.envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+.envelope.open .env-card{transform:translateY(-70%)}
+.envelope.open .seal{opacity:0}
+
+/* Scene 2: bouquet */
+#bouquet{width:min(360px,90vw);height:min(400px,52vh)}
+.lily{transform-origin:center;transform:scale(0);animation:bloom 1.4s cubic-bezier(.2,.9,.3,1.2) forwards}
+@keyframes bloom{to{transform:scale(1)}}
+
+/* Scene 3: letter */
+.letter{
+  width:min(560px,100%);background:var(--cream);padding:34px 28px;border-radius:6px;text-align:left;
+  box-shadow:0 14px 34px rgba(90,40,60,.22);border-top:6px solid var(--rose);max-height:68vh;overflow-y:auto;
+}
+.letter p{font-size:clamp(1.15rem,3.8vw,1.35rem);line-height:1.65;margin-bottom:14px;max-width:62ch}
+.sign{font-family:'Caveat',cursive;font-size:1.7rem;color:var(--rose);text-align:right}
+
+/* Scene 4: cake */
+.cake{width:200px;height:210px;margin:10px auto}
+.flame{transform-origin:50% 100%;animation:flick .5s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scale(1,1)}to{transform:scale(.88,1.12)}}
+.out .flame{display:none}
+
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.petal{position:fixed;top:-20px;z-index:5;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.6}}
+@media (prefers-reduced-motion:reduce){.lily{animation-duration:.01s}.flame,.petal{animation:none}.scene{transition:none}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<!-- Scene 1 -->
+<section class="scene active" id="s1">
+  <p class="hand">click this envelope, babbuh 🤍</p>
+  <div class="envelope" id="env" tabindex="0" role="button" aria-label="Open the envelope">
+    <div class="env-back"></div>
+    <div class="env-card">For Amora 🤍</div>
+    <div class="env-front"></div>
+    <div class="env-flap"></div>
+    <div class="seal">♥</div>
+  </div>
+</section>
+
+<!-- Scene 2 -->
+<section class="scene" id="s2">
+  <h1>Happy Birthday,<br>Amora</h1>
+  <svg id="bouquet" viewBox="0 0 360 400" aria-hidden="true"></svg>
+  <p class="hand">these lilies are for you</p>
+  <button class="btn" data-next>Next</button>
+</section>
+
+<!-- Scene 3 -->
+<section class="scene" id="s3">
+  <h2>A letter for you</h2>
+  <div class="letter">
+    <p>Thank you so, so much po, baby, for being such an amazing girlfriend as always. I really appreciate everything you do for me, baby, huhu. I love you just the way you are, and please don't change, huhu. Even though we have our ups and downs, I will always choose to fix things for you, okay?</p>
+    <p>I'm also taking this opportunity to ask: are you willing to take my hand so we can create more memories together and build our future? If it's a yes, look at me, smile, and say yes. If it's a no, then sad sad na ako HAHAHAHA.</p>
+    <p>Anyways, happy birthday po, baby ko. I love you so, so, so, so, so, so much, baby ko.</p>
+    <p class="sign">— Miake</p>
+  </div>
+  <button class="btn" data-next>Last surprise</button>
+</section>
+
+<!-- Scene 4 -->
+<section class="scene" id="s4">
+  <h2>Make a wish</h2>
+  <svg class="cake" id="cake" viewBox="0 0 200 210" aria-hidden="true">
+    <rect x="30" y="110" width="140" height="80" rx="10" fill="#f6d2dc"/>
+    <path d="M30 128 q17 18 35 0 q17 18 35 0 q17 18 35 0 q17 18 35 0 v-18 h-140z" fill="#fff"/>
+    <rect x="94" y="70" width="12" height="42" rx="3" fill="#d98fa6"/>
+    <g class="flame"><path d="M100 36 q-13 20 0 32 q13 -12 0 -32z" fill="#f7c85a"/><path d="M100 48 q-6 10 0 17 q6 -7 0 -17z" fill="#f08a3c"/></g>
+    <rect x="20" y="188" width="160" height="10" rx="5" fill="#c9a45c"/>
+  </svg>
+  <p class="hand" id="wishText">close your eyes, tapos tap the candle 🕯️</p>
+  <button class="btn" id="blow">Blow the candle</button>
+</section>
+
+<script>
+const scenes = [...document.querySelectorAll('.scene')];
+let current = 0;
+function go(i){
+  scenes[current].classList.remove('active');
+  current = i;
+  scenes[current].classList.add('active');
+  if (i === 1) buildBouquet();
+  if (i === 3) burst();
+}
+document.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => go(current + 1)));
+
+/* Scene 1: envelope */
+const env = document.getElementById('env');
+function openEnv(){
+  if (env.classList.contains('open')) return;
+  env.classList.add('open');
+  rain(14);
+  setTimeout(() => go(1), 1800);
+}
+env.addEventListener('click', openEnv);
+env.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openEnv(); });
+
+/* Scene 2: lily bouquet (SVG) */
+let built = false;
+function lily(cx, cy, size, rot, delay){
+  let petals = '';
+  for (let k = 0; k < 6; k++){
+    petals += `<ellipse cx="0" cy="${-size*0.55}" rx="${size*0.22}" ry="${size*0.55}" fill="#fff" stroke="#efc5d2" stroke-width="1.5" transform="rotate(${k*60})"/>`;
+  }
+  let stamens = '';
+  for (let k = 0; k < 5; k++){
+    stamens += `<line x1="0" y1="0" x2="0" y2="${-size*0.4}" stroke="#c9a45c" stroke-width="1.5" transform="rotate(${k*72-144})"/><circle cx="0" cy="${-size*0.42}" r="2.6" fill="#d98fa6" transform="rotate(${k*72-144})"/>`;
+  }
+  return `<g transform="translate(${cx} ${cy}) rotate(${rot})"><g class="lily" style="animation-delay:${delay}s">${petals}<circle r="${size*0.12}" fill="#f7e3a1"/>${stamens}</g></g>`;
+}
+function buildBouquet(){
+  if (built) return; built = true;
+  const stems = [[180,250,110],[180,250,180],[180,250,250]].map(s =>
+    `<path d="M180 380 C180 320 ${s[0]===180?s[2]:s[2]} 290 ${s[2]} ${s[1]-100}" stroke="#5f7f62" stroke-width="5" fill="none" stroke-linecap="round"/>`).join('');
+  const leaves = `<path d="M180 370 C120 340 100 300 120 280 C150 300 175 330 180 370z" fill="#6f9072"/><path d="M180 370 C240 340 260 300 240 280 C210 300 185 330 180 370z" fill="#6f9072"/>`;
+  const ribbon = `<path d="M150 340 L210 340 L200 372 L160 372z" fill="#d98fa6"/><path d="M165 372 L155 396 L175 386z M195 372 L205 396 L185 386z" fill="#c8758f"/>`;
+  const flowers = lily(110,150,48,-18,.2) + lily(250,150,48,18,.5) + lily(180,105,58,0,.8) + lily(145,215,42,-10,1.1) + lily(215,215,42,10,1.4);
+  document.getElementById('bouquet').innerHTML = stems + leaves + ribbon + flowers;
+}
+
+/* Scene 4: candle */
+document.getElementById('blow').addEventListener('click', () => {
+  document.getElementById('cake').classList.add('out');
+  document.getElementById('wishText').textContent = 'Sana matupad lahat ng wish mo. I love you, Amora 🤍';
+  document.getElementById('blow').style.display = 'none';
+  burst(); rain(30);
+});
+
+/* Falling petals */
+function rain(n){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  for (let i = 0; i < n; i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.width = p.style.height = (10 + Math.random()*10) + 'px';
+    p.style.borderRadius = '70% 0 70% 0';
+    p.style.background = Math.random() > .5 ? '#fff' : '#f3b8c9';
+    p.style.animationDuration = (4 + Math.random()*4) + 's';
+    p.style.animationDelay = Math.random()*1.5 + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 10000);
+  }
+}
+
+/* Confetti */
+const cv = document.getElementById('confetti'), cx = cv.getContext('2d');
+function size(){ cv.width = innerWidth; cv.height = innerHeight; }
+size(); addEventListener('resize', size);
+let bits = [], running = false;
+function burst(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colors = ['#d98fa6','#f3b8c9','#fff','#c9a45c','#f7e3a1'];
+  for (let i = 0; i < 120; i++){
+    bits.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*14,vy:Math.random()*-14-3,
+      s:4+Math.random()*6,c:colors[i%colors.length],r:Math.random()*6,life:140});
+  }
+  if (!running){ running = true; tick(); }
+}
+function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  bits = bits.filter(b => b.life-- > 0);
+  bits.forEach(b => {
+    b.x += b.vx; b.y += b.vy; b.vy += .3; b.r += .2;
+    cx.save(); cx.translate(b.x,b.y); cx.rotate(b.r);
+    cx.fillStyle = b.c; cx.globalAlpha = Math.min(1,b.life/40);
+    cx.fillRect(-b.s/2,-b.s/2,b.s,b.s*.6); cx.restore();
+  });
+  if (bits.length) requestAnimationFrame(tick); else running = false;
+}
+</script>
+</body>
+</html>
